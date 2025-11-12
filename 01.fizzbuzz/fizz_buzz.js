@@ -8,7 +8,7 @@ function fizzBuzz(n) {
   } else if (n % 5 === 0) {
     return "Buzz";
   } else {
-    return `${n}`;
+    return n.toString();
   }
 }
 
