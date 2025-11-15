@@ -11,11 +11,11 @@ const calendar = generateCalendarLines(year, month);
 console.log(calendar.join("\n"));
 
 function generateCalendarLines(year, month) {
-  return [
-    `      ${month + 1}月 ${year}`,
-    "日 月 火 水 木 金 土",
-    ...body(year, month),
-  ];
+  return [...header(year, month), ...body(year, month)];
+}
+
+function header(year, month) {
+  return [`      ${month + 1}月 ${year}`, "日 月 火 水 木 金 土"];
 }
 
 function body(year, month) {
