@@ -4,8 +4,9 @@ import minimist from "minimist";
 import dayjs from "dayjs";
 
 const options = minimist(process.argv.slice(2));
-const year = "y" in options ? options.y : dayjs().year();
-const month = "m" in options ? options.m - 1 : dayjs().month();
+const now = dayjs();
+const year = "y" in options ? options.y : now.year();
+const month = "m" in options ? options.m - 1 : now.month();
 const calendar = generateCalendarLines(year, month);
 console.log(calendar.join("\n"));
 
