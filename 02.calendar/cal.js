@@ -2,6 +2,9 @@
 
 import minimist from "minimist";
 import dayjs from "dayjs";
+import arraySupport from "dayjs/plugin/arraySupport.js";
+
+dayjs.extend(arraySupport);
 
 const options = minimist(process.argv.slice(2));
 const now = dayjs();
@@ -19,7 +22,7 @@ function createHeaderLines(year, month) {
 }
 
 function createBodyLines(year, month) {
-  const first = dayjs().year(year).month(month).date(1);
+  const first = dayjs([year, month, 1]);
   const blanks = Array.from({ length: first.day() }, () => null);
   const daysInMonth = first.daysInMonth();
   const fullDays = [
