@@ -11,14 +11,14 @@ const calendar = generateCalendarLines(year, month);
 console.log(calendar.join("\n"));
 
 function generateCalendarLines(year, month) {
-  return [...header(year, month), ...body(year, month)];
+  return [...createHeaderLines(year, month), ...createBodyLines(year, month)];
 }
 
-function header(year, month) {
+function createHeaderLines(year, month) {
   return [`      ${month + 1}月 ${year}`, "日 月 火 水 木 金 土"];
 }
 
-function body(year, month) {
+function createBodyLines(year, month) {
   const first = dayjs().year(year).month(month).date(1);
   const blanks = Array.from({ length: first.day() }, () => null);
   const daysInMonth = first.daysInMonth();
