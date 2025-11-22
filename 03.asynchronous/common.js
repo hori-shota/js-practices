@@ -7,11 +7,11 @@ function openDB() {
 }
 
 function run(db, sql, params) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (params) {
       db.run(sql, params, function (error) {
         if (error) {
-          console.error(error.message);
+          reject(error);
         } else {
           console.log(this.lastID);
         }
@@ -24,10 +24,10 @@ function run(db, sql, params) {
 }
 
 function all(db, sql) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     db.all(sql, (error, rows) => {
       if (error) {
-        console.error(error.message);
+        reject(error);
       } else {
         rows.forEach((row) => console.log(row));
       }
