@@ -12,10 +12,18 @@ import { openDB, run, all } from "../common.js";
 
   const titles = ["本A", "本B", "本C", "本D", "本A"];
   for (const title of titles) {
-    await run(db, "INSERT INTO books (title) VALUES (?)", [title]);
+    try {
+      await run(db, "INSERT INTO books (title) VALUES (?)", [title]);
+    } catch (error) {
+      console.error(error.message);
+    }
   }
 
-  await all(db, "SELECT id, title, content FROM books");
+  try {
+    await all(db, "SELECT id, title, content FROM books");
+  } catch (error) {
+    console.error(error.message);
+  }
 
   await run(db, "DROP TABLE books");
 
