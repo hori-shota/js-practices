@@ -36,4 +36,12 @@ function all(db, sql) {
   });
 }
 
-export { openDB, run, all };
+function close(db) {
+  return new Promise((resolve, reject) => {
+    db.close((err) => {
+      err ? reject(err) : resolve();
+    });
+  });
+}
+
+export { openDB, run, all, close };

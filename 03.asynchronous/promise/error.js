@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { openDB, run, all } from "../common.js";
+import { openDB, run, all, close } from "../common.js";
 
 openDB()
   .then((db) => {
@@ -23,7 +23,7 @@ openDB()
     return run(db, "DROP TABLE books");
   })
   .then((db) => {
-    db.close();
+    return close(db);
   })
   .catch((error) => {
     console.error(error.message);

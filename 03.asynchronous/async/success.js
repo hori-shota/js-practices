@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { openDB, run, all } from "../common.js";
+import { openDB, run, all, close } from "../common.js";
 
 (async function () {
   const db = await openDB();
@@ -19,5 +19,5 @@ import { openDB, run, all } from "../common.js";
 
   await run(db, "DROP TABLE books");
 
-  db.close();
+  await close();
 })();
