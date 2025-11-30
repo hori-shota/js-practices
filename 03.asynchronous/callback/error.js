@@ -21,6 +21,9 @@ const db = new sqlite3.Database(":memory:", () => {
             db.all("SELECT id, title, content FROM books", (err, rows) => {
               if (err) {
                 console.error(err.message);
+                db.run("DROP TABLE books", () => {
+                  db.close();
+                });
               } else {
                 rows.forEach((row) => {
                   console.log(row);
