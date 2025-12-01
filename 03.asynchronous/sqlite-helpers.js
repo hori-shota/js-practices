@@ -18,7 +18,7 @@ function run(db, sql, params) {
         resolve();
       });
     } else {
-      db.run(sql, () => resolve(db));
+      db.run(sql, () => resolve());
     }
   });
 }
@@ -31,7 +31,7 @@ function all(db, sql) {
       } else {
         rows.forEach((row) => console.log(row));
       }
-      resolve(db);
+      resolve();
     });
   });
 }
