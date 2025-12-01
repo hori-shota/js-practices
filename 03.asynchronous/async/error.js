@@ -2,42 +2,40 @@
 
 import { openDB, run, all, close } from "../sqlite-helpers.js";
 
-(async function () {
-  const db = await openDB();
+const db = await openDB();
 
-  await run(
-    db,
-    "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
-  );
+await run(
+  db,
+  "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
+);
 
-  const titles = ["本A", "本B", "本C", "本D", "本A"];
-  for (const title of titles) {
-    try {
-      await run(db, "INSERT INTO books (title) VALUES (?)", [title]);
-    } catch (err) {
-      if (err.code === "SQLITE_CONSTRAINT") {
-        console.error(err.message);
-      } else {
-        throw err;
-      }
-    }
-  }
-
+const titles = ["本A", "本B", "本C", "本D", "本A"];
+for (const title of titles) {
   try {
-    const rows = await all(db, "SELECT id, title, content FROM books");
-
-    rows.forEach((row) => {
-      console.log(row);
-    });
+    await run(db, "INSERT INTO books (title) VALUES (?)", [title]);
   } catch (err) {
-    if (err.code === "SQLITE_ERROR") {
+    if (err.code === "SQLITE_CONSTRAINT") {
       console.error(err.message);
     } else {
       throw err;
     }
   }
+}
 
-  await run(db, "DROP TABLE books");
+try {
+  const rows = await all(db, "SELECT id, title, content FROM books");
 
-  await close(db);
-})();
+  rows.forEach((row) => {
+    console.log(row);
+  });
+} catch (err) {
+  if (err.code === "SQLITE_ERROR") {
+    console.error(err.message);
+  } else {
+    throw err;
+  }
+}
+
+await run(db, "DROP TABLE books");
+
+await close(db);
