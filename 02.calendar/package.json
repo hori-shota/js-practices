@@ -10,5 +10,10 @@
     "globals": "^15.13.0",
     "prettier": "^3.4.2"
   },
+  "dependencies": {
+    "dayjs": "^1.11.19",
+    "lodash": "^4.17.21",
+    "minimist": "^1.2.8"
+  },
   "type": "module"
 }
