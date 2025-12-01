@@ -1,6 +1,6 @@
 import sqlite3 from "sqlite3";
 
-function openDB() {
+export function openDB() {
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database(":memory:", (err) => {
       err ? reject(err) : resolve(db);
@@ -8,7 +8,7 @@ function openDB() {
   });
 }
 
-function run(db, sql, params) {
+export function run(db, sql, params) {
   return new Promise((resolve, reject) => {
     if (params) {
       db.run(sql, params, function (error) {
@@ -25,7 +25,7 @@ function run(db, sql, params) {
   });
 }
 
-function all(db, sql) {
+export function all(db, sql) {
   return new Promise((resolve, reject) => {
     db.all(sql, (error, rows) => {
       if (error) {
@@ -38,12 +38,10 @@ function all(db, sql) {
   });
 }
 
-function close(db) {
+export function close(db) {
   return new Promise((resolve, reject) => {
     db.close((err) => {
       err ? reject(err) : resolve();
     });
   });
 }
-
-export { openDB, run, all, close };
