@@ -2,7 +2,9 @@ import sqlite3 from "sqlite3";
 
 function openDB() {
   return new Promise((resolve) => {
-    const db = new sqlite3.Database(":memory:", () => resolve(db));
+    const db = new sqlite3.Database(":memory:", () => {
+      resolve(db);
+    });
   });
 }
 
