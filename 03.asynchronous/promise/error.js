@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { openDB, run, all, close } from "../common.js";
+import { openDB, run, all, close } from "../sqlite-helpers.js";
 
 let db;
 
