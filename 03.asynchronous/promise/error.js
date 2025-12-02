@@ -18,12 +18,30 @@ openDB()
     const sql = "INSERT INTO books (title) VALUES (?)";
     const promises = titles.map((title) => run(db, sql, [title]));
 
-    return Promise.all(promises);
+    return Promise.allSettled(promises);
   })
   .then((results) => {
+    let ids = [];
+    let errors = [];
+
     results.forEach((result) => {
-      console.log(result.lastID);
+      if (result.status === "rejected") {
+        errors.push(result.reason.message);
+      } else {
+        ids.push(result.value.lastID);
+      }
     });
+
+    ids.forEach((id) => {
+      console.log(id);
+    });
+
+    if (errors.length > 0) {
+      throw new Error(errors.join("\n"));
+    }
+  })
+  .catch((err) => {
+    console.error(err.message);
 
     return all(db, "SELECT id, title, content FROM books");
   })
@@ -34,7 +52,7 @@ openDB()
 
     return run(db, "DROP TABLE books");
   })
-  .then(() => close(db))
   .catch((err) => {
     console.error(err.message);
-  });
+  })
+  .then(() => close(db));
