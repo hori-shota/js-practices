@@ -10,9 +10,13 @@ await run(
 );
 
 const titles = ["本A", "本B", "本C", "本D", "本A"];
+let results = [];
+
 for (const title of titles) {
   try {
-    await run(db, "INSERT INTO books (title) VALUES (?)", [title]);
+    results.push(
+      await run(db, "INSERT INTO books (title) VALUES (?)", [title]),
+    );
   } catch (err) {
     if (err.code === "SQLITE_CONSTRAINT") {
       console.error(err.message);
@@ -21,6 +25,10 @@ for (const title of titles) {
     }
   }
 }
+
+results.forEach((result) => {
+  console.log(result.lastID);
+});
 
 try {
   const rows = await all(db, "SELECT id, title, content FROM books");
