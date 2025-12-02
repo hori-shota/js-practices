@@ -9,8 +9,9 @@ await run(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 );
 
-const titles = ["本A", "本B", "本C", "本D", "本A"];
 let results = [];
+let errors = [];
+const titles = ["本A", "本B", "本C", "本D", "本A"];
 
 for (const title of titles) {
   try {
@@ -19,7 +20,7 @@ for (const title of titles) {
     );
   } catch (err) {
     if (err.code === "SQLITE_CONSTRAINT") {
-      console.error(err.message);
+      errors.push(err.message);
     } else {
       throw err;
     }
@@ -28,6 +29,10 @@ for (const title of titles) {
 
 results.forEach((result) => {
   console.log(result.lastID);
+});
+
+errors.forEach((err) => {
+  console.error(err);
 });
 
 try {
