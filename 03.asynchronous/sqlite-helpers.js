@@ -3,7 +3,11 @@ import sqlite3 from "sqlite3";
 export function openDB() {
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database(":memory:", (err) => {
-      err ? reject(err) : resolve(db);
+      if (err) {
+        reject(err);
+      } else {
+        resolve(db);
+      }
     });
   });
 }
@@ -12,9 +16,10 @@ export function run(db, sql, params = []) {
   return new Promise((resolve, reject) => {
     const callback = function (err) {
       if (err) {
-        return reject(err);
+        reject(err);
+      } else {
+        resolve({ lastID: this.lastID, changes: this.changes });
       }
-      resolve({ lastID: this.lastID, changes: this.changes });
     };
 
     db.run(sql, params, callback);
@@ -36,7 +41,11 @@ export function get(db, sql, params = []) {
 export function close(db) {
   return new Promise((resolve, reject) => {
     db.close((err) => {
-      err ? reject(err) : resolve();
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
     });
   });
 }
