@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { openDB, run, all, close } from "../sqlite-helpers.js";
+import { openDB, run, get, close } from "../sqlite-helpers.js";
 
 const db = await openDB();
 
@@ -9,22 +9,11 @@ await run(
   "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 );
 
-const titles = ["本A", "本B", "本C", "本D"];
-let results = [];
+const result = await run(db, "INSERT INTO books (title) VALUES (?)", ["本A"]);
 
-for (const title of titles) {
-  results.push(await run(db, "INSERT INTO books (title) VALUES (?)", [title]));
-}
+console.log(result.lastID);
 
-results.forEach((result) => {
-  console.log(result.lastID);
-});
-
-const rows = await all(db, "SELECT id, title FROM books");
-
-rows.forEach((row) => {
-  console.log(row);
-});
+console.log(await get(db, "SELECT id, title FROM books"));
 
 await run(db, "DROP TABLE books");
 
