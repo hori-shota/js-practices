@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { openDB, run, all, close } from "../sqlite-helpers.js";
+import { openDB, run, get, close } from "../sqlite-helpers.js";
 
 let db;
 
@@ -14,34 +14,28 @@ openDB()
     );
   })
   .then(() => {
-    const titles = ["本A", "本B", "本C", "本D", "本A"];
-    const sql = "INSERT INTO books (title) VALUES (?)";
-    const promises = titles.map((title) => run(db, sql, [title]));
-
-    return Promise.all(promises);
+    return run(db, "INSERT INTO books (title) VALUES (?)", []);
   })
-  .then((results) => {
-    results.forEach((result) => {
+  .then(
+    (result) => {
       console.log(result.lastID);
-    });
 
-    return all(db, "SELECT id, title, content FROM books");
-  })
-  .catch((err) => {
-    console.error(err.message);
+      return get(db, "SELECT id, title, content FROM books");
+    },
+    (err) => {
+      console.error(err.message);
 
-    return all(db, "SELECT id, title, content FROM books");
-  })
-  .then((rows) => {
-    rows.forEach((row) => {
+      return get(db, "SELECT id, title, content FROM books");
+    },
+  )
+  .then(
+    (row) => {
       console.log(row);
-    });
 
-    return run(db, "DROP TABLE books");
-  })
-  .catch((err) => {
-    console.error(err.message);
-
-    return run(db, "DROP TABLE books");
-  })
+      return run(db, "DROP TABLE books");
+    },
+    (err) => {
+      console.error(err.message);
+    },
+  )
   .then(() => close(db));
