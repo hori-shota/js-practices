@@ -21,10 +21,14 @@ export function run(db, sql, params = []) {
   });
 }
 
-export function all(db, sql, params = []) {
+export function get(db, sql, params = []) {
   return new Promise((resolve, reject) => {
-    db.all(sql, params, (err, rows) => {
-      err ? reject(err) : resolve(rows);
+    db.get(sql, params, (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row);
+      }
     });
   });
 }
